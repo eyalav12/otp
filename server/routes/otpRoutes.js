@@ -59,7 +59,6 @@ async function getTemperature(city) {
 async function getTemperature1(city) {
     const apiKey = process.env.WEATHER_API_KEY;
     const url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`;
-    //http://api.weatherapi.com/v1/forecast.json?key=074d284346c4485697d124845242805&q=Eilat&days=1&aqi=no&alerts=no
 
 
     try {
@@ -78,7 +77,7 @@ async function getTemperature1(city) {
         if (formattedTemperature.length === 1) {
             formattedTemperature = '0' + formattedTemperature;
         }
-        return Math.abs(Math.round(temperature)); 
+        return formattedTemperature; 
     } catch (error) {
         console.error(error);
         return null;
@@ -98,32 +97,8 @@ function generateOTP1() {
     return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-// router.post('/generate-otp', async (req, res) => {
-//     try {
-//         const { email } = req.body;
-        
-//         if (!validator.isEmail(email)) {
-//             return res.status(400).json({ message: 'Invalid email format' });
-//         }
-        
-//         console.log('before');
-//         const otp = await generateOTP();
-//         console.log('otp to add',otp);
-//         const otpRecord = new Otp({ email, otp, createdAt: new Date() });
-//         otpRecord.save()
-//         .then(() => {
-//             res.send(otpRecord);
-//             sendVerificationEmail(email, otp);
-//         })
-//         .catch((e) => {
-//             console.error('Error saving book:', e); 
-//             res.status(400).send(e);
-//         });
-        
-//     } catch(error){
-//         return res.status(400).send(error);
-//     }
-// });
+
+
 
 router.post('/generate-otp', async (req, res) => {
     try {
@@ -146,16 +121,68 @@ router.post('/generate-otp', async (req, res) => {
             console.log('Verification email sent');
         } catch (emailError) {
             console.error('Error sending verification email:', emailError);
-            // Optionally, you might want to delete the OTP record if email sending fails
+            
         }
 
         res.send({ message: 'OTP generated and email sent', otp: otpRecord });
 
     } catch(error){
         console.error('Error in /generate-otp route:', error);
-        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+        res.status(500).json({ message: 'Error', error: error.message });
     }
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+router.post('/validate-otp', async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+
+        
+        if (!validator.isEmail(email)) {
+            return res.status(400).json({ message: 'Invalid email format' });
+        }
+
+        
+        const otpRecord = await Otp.findOne({ email });
+        if (!otpRecord) {
+            return res.status(400).json({ message: 'No OTP found for this email' });
+        }
+
+        
+        if (otpRecord.otp !== otp) {
+            return res.status(400).json({ message: 'Invalid OTP' });
+        }
+
+        
+        res.json({ message: 'OTP is valid' });
+    } catch (error) {
+        console.error('Error in validate-otp route:', error);
+        res.status(500).json({ message: 'Error', error: error.message });
+    }
+})
+
 module.exports = router;
+
+
+
+
+
+
+
+
+
