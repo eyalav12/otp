@@ -1,11 +1,10 @@
+
+
 import { useState } from "react";
 import styles from './EmailForm.module.css';
 
-
-
 function EmailForm() {
     const [email, setEmail] = useState('');
-    const [otp, setOtp] = useState('');
     const [message, setMessage] = useState('');
 
     async function submitHandler(event) {
@@ -24,11 +23,7 @@ function EmailForm() {
                 throw new Error('Failed sending email');
             }
 
-            const data = await response.json();
-            if (data) {
-                setOtp(data.otp);
-                setMessage('Email sent successfully. Check your inbox.');
-            }
+            setMessage('Email sent successfully. Check your inbox.');
         } catch (error) {
             console.error('Error generating OTP:', error);
             setMessage('Failed to send email. Please try again.');
@@ -46,7 +41,7 @@ function EmailForm() {
             <form onSubmit={submitHandler}>
                 <input className={styles.inputField} onChange={inputHandler} value={email} type="text" placeholder="Enter your email" />
                 <button className={styles.submitButton}>Submit</button>
-                <p>{message}</p>
+                {message && <p className={styles.message}>{message}</p>}
             </form>
         </div>
     );
