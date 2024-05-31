@@ -1,35 +1,77 @@
-const express=require('express');
-const mongoose = require('mongoose');
-const port = process.env.PORT || 5000;
-require('dotenv').config();
+// const express=require('express');
+// const mongoose = require('mongoose');
+// const port = process.env.PORT || 5000;
+// require('dotenv').config();
 
+// const cors = require('cors');
+// const otpRouter=require('./routes/otpRoutes');
+// const app=express();
+// app.use(cors());
+
+// const corsOptions = {
+//     origin: 'http://localhost:3000', 
+//     optionsSuccessStatus: 200 
+//   };
+  
+  
+// app.use(cors(corsOptions));
+// app.use(express.json());
+// app.use(otpRouter);
+
+
+
+
+
+
+
+
+
+
+
+
+
+// mongoose.connect(process.env.MONGODB_URL)
+// .then(()=>{
+//     console.log("connected to db");
+//     app.listen(port,()=>{
+//         console.log(`server is running on port ${port}`);
+//     });
+// }).catch((e)=>{
+//     console.log("failed",e);
+// });
+
+
+const express = require('express');
+const mongoose = require('mongoose');
+require('dotenv').config();
 const cors = require('cors');
-const otpRouter=require('./routes/otpRoutes');
-const app=express();
+const otpRouter = require('./routes/otpRoutes'); 
+
+const app = express();
 app.use(cors());
 
 const corsOptions = {
-    origin: 'http://localhost:3000', 
-    optionsSuccessStatus: 200 
-  };
-  
-  
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200
+};
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(otpRouter);
 
+const port = process.env.PORT || 5000;
 
+mongoose.connect(process.env.MONGODB_URL).then(() => {
+    console.log("Connected to database");
 
-
-
-
-
-mongoose.connect(process.env.MONGODB_URL)
-.then(()=>{
-    console.log("connected to db");
-    app.listen(port,()=>{
-        console.log(`server is running on port ${port}`);
-    });
-}).catch((e)=>{
-    console.log("failed",e);
+    if (require.main === module) {
+        app.listen(port, () => {
+            console.log(`Server is running on port ${port}`);
+        });
+    }
+}).catch((error) => {
+    console.error('Database connection error:', error);
 });
+
+
+module.exports = app; 
