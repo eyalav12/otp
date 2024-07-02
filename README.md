@@ -23,6 +23,5 @@ is used as a basis for generating OTPs. You need to sign up and get an API key f
 use it in this project.
 
 ## Tests
-Tests
 This project includes basic tests for the backend API routes using Jest and Supertest. These tests
 cover OTP generation and validation functionality to ensure the backend operates correctly.
