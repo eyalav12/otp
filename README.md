@@ -1,3 +1,4 @@
-OTP API Implementation Exercise
-This project involves building APIs in Node.js to implement OTP (One-Time Password) functionality, including the use of an external API.
-
+**OTP Project**
+This project provides a simple implementation of generating and validating One-Time Passwords (OTPs)
+through email. The backend is built with Node.js and Express, and the frontend is developed
+using React.
