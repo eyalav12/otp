@@ -2,7 +2,7 @@
 
 This project provides an implementation of generating and validating One-Time Passwords (OTPs)
 through email,utilizing an external API for added functionality. The backend is built with
-Node.js and Express, and the frontend is developedusing React.
+Node.js and Express, and the frontend is developed using React.
 
 ## Prerequisites
 - Node.js
